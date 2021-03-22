@@ -1,0 +1,11 @@
+{
+    "files.associations": {
+        "json.h": "c",
+        "iron_goat.h": "c",
+        "graphics.hpp": "c",
+        "window.hpp": "c",
+        "system.hpp": "c",
+        "noncopyable.hpp": "c",
+        "fileinputstream.hpp": "c"
+    }
+}
