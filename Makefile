@@ -1,5 +1,5 @@
 CC =	gcc
-CFLAGS =	-I./include -I./erty/lib/include -L./erty/lib -lerty
+CFLAGS =	-I./include -I./erty/lib/include -L./erty/lib -lerty -g3
 SRC 	=	main.c
 OBJ =	$(SRC:.c=.o)
 NAME =	test
@@ -18,3 +18,6 @@ re:
 	make re -j -C ./erty/lib/ --silent
 	make fclean -j -C ./erty/lib --silent
 	make all -j -C ./erty/lib --silent
+
+expand:
+	$(CC) $(SRC) $(CFLAGS) -E -o $(NAME)
