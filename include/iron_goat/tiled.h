@@ -5,12 +5,13 @@
 ** goat
 */
 
-#ifndef __LIB_IRON_GOAT_H__
-    #define __LIB_IRON_GOAT_H__
+#ifndef __LIB_IRON_GOAT_TILED_H__
+    #define __LIB_IRON_GOAT_TILED_H__
 
     #include <erty/evector.h>
     #include <erty/opt.h>
     #include <erty/ectypes.h>
+    #include <erty/json.h>
 
     typedef struct iron_goat_layer ig_layer_t;
     typedef struct iron_goat_map ig_map_t;
@@ -29,6 +30,19 @@
     typedef struct iron_goat_wangtile ig_wangtile_t;
     typedef struct iron_goat_wangset ig_wangset_t;
     typedef struct iron_goat_tileset ig_goat_tileset_t;
+
+    void destroy_iron_goat_wangset(struct iron_goat_wangset *self);
+    void destroy_iron_goat_chunk(struct iron_goat_chunk *self);
+    void destroy_iron_goat_layer(struct iron_goat_layer *self);
+    void destroy_iron_goat_map(struct iron_goat_map *self);
+    void destroy_iron_goat_object(struct iron_goat_object *self);
+    void destroy_iron_goat_property(struct iron_goat_property *self);
+    void destroy_iron_goat_terrain(struct iron_goat_terrain *self);
+    void destroy_iron_goat_text(struct iron_goat_text *self);
+    void destroy_iron_goat_tile(struct iron_goat_tile *self);
+    void destroy_iron_goat_tileset(struct iron_goat_tileset *self);
+    void destroy_iron_goat_wangcolor(struct iron_goat_wangcolor *self);
+    void destroy_iron_goat_wangset(struct iron_goat_wangset *self);
 
     typedef enum {
         MAP_ORTHOGONAL,
@@ -249,7 +263,7 @@
         i64_t y;
     };
 
-    INIT_VECTOR(ig_obj, struct iron_goat_object, NULL);
+    INIT_VECTOR(ig_obj, struct iron_goat_object, destroy_iron_goat_object);
 
     struct iron_goat_layer {
         u64_t id;
@@ -277,7 +291,7 @@
         VECTOR(ig_prop) *properties;
     };
 
-    INIT_VECTOR(ig_layer, struct iron_goat_layer, NULL);
+    INIT_VECTOR(ig_layer, struct iron_goat_layer, destroy_iron_goat_layer);
     INIT_VECTOR(ig_tile_terrain, struct iron_goat_tile_terrain, NULL);
 
     struct iron_goat_tile {
@@ -316,19 +330,23 @@
     INIT_VECTOR(ig_u64, u64_t, NULL);
     INIT_VECTOR(ig_i64, i64_t, NULL);
 
-    INIT_VECTOR(ig_map, struct iron_goat_map, NULL);
-    INIT_VECTOR(ig_chunk, struct iron_goat_chunk, NULL);
+    INIT_VECTOR(ig_map, struct iron_goat_map, destroy_iron_goat_map);
+    INIT_VECTOR(ig_chunk, struct iron_goat_chunk, destroy_iron_goat_chunk);
     INIT_VECTOR(ig_point, struct iron_goat_point, NULL);
-    INIT_VECTOR(ig_text, struct iron_goat_text, NULL);
-    INIT_VECTOR(ig_prop, struct iron_goat_property, NULL);
+    INIT_VECTOR(ig_text, struct iron_goat_text, destroy_iron_goat_text);
+    INIT_VECTOR(ig_prop, struct iron_goat_property, destroy_iron_goat_property);
     INIT_VECTOR(ig_tileoffset, struct iron_goat_tileoffset, NULL);
     INIT_VECTOR(ig_frame, struct iron_goat_frame, NULL);
     INIT_VECTOR(iron_goat_grid, struct iron_goat_grid, NULL);
-    INIT_VECTOR(ig_terrain, struct iron_goat_terrain, NULL);
-    INIT_VECTOR(ig_tile, struct iron_goat_tile, NULL);
-    INIT_VECTOR(ig_wangcolor, struct iron_goat_wangcolor, NULL);
+    INIT_VECTOR(ig_terrain, struct iron_goat_terrain,
+                            destroy_iron_goat_terrain);
+    INIT_VECTOR(ig_tile, struct iron_goat_tile, destroy_iron_goat_tile);
+    INIT_VECTOR(ig_wangcolor, struct iron_goat_wangcolor,
+                                destroy_iron_goat_wangcolor);
     INIT_VECTOR(ig_wangtile, struct iron_goat_wangtile, NULL);
-    INIT_VECTOR(ig_wangset, struct iron_goat_wangset, NULL);
-    INIT_VECTOR(ig_tileset, struct iron_goat_tileset, NULL);
+    INIT_VECTOR(ig_wangset, struct iron_goat_wangset,
+                            destroy_iron_goat_wangset);
+    INIT_VECTOR(ig_tileset, struct iron_goat_tileset,
+                            destroy_iron_goat_tileset);
 
 #endif

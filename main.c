@@ -1,4 +1,4 @@
-#include <iron_goat.h>
+#include <iron_goat/tiled.h>
 
 int main(void)
 {
