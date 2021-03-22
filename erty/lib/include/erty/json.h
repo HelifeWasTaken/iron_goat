@@ -39,6 +39,7 @@
     struct json {
         union json_value v;
         enum json_type t;
+        bool drop;
     };
 
     INIT_OPT(json, struct json)
@@ -90,7 +91,15 @@
         OPT(json_bucket) (*at)(struct json_bucket *, size_t i);
     };
 
-    u64_t ehasher(const void *data);
+    static inline u64_t ehasher(const void *data)
+    {
+        const u8_t *data_cs = (const u8_t*) data;
+        u64_t hash = 0;
+
+        for (usize_t i = 0; data_cs[i]; i++)
+            hash = data_cs[i] + (hash << 6) + (hash << 16) - hash;
+        return (hash);
+    }
 
     bool json_hashmap_insert(struct json_hashmap **self,
                             struct tuple_json_bucket data);
@@ -112,38 +121,45 @@
 
     OPT(json_bucket) json_bucket_get_at(struct json_bucket *self, size_t i);
 
-    #define CLEAR_JSON_OBJECT(object) \
+    #define CLEAR_JSON_OBJECT(self) \
+        if (self->drop == true) \
+            break; \
         do { \
-            struct json_hashmap *tmp = object; \
+            struct json_hashmap *tmp = self->v.object; \
             tmp->clear(&tmp); \
         } while (0);
 
-    #define CLEAR_JSON_ARRAY(array) \
+    #define CLEAR_JSON_ARRAY(self) \
+        if (self->drop == true) \
+            break; \
         do { \
-            struct json_array *tmp = array; \
+            struct json_array *tmp = self->v.array; \
             tmp->clear(&tmp); \
         } while (0);
+
+    #define JSON_FREE(self, type) \
+        if (self->drop == false) \
+            FREE(self->v.type)
 
     static inline void destroy_json(struct json *self)
     {
         switch (self->t) {
             case JSON_ANY:
-                FREE(self->v.null)
+                JSON_FREE(self, null)
                 break;
             case JSON_NULL:
-                FREE(self->v.null)
+                JSON_FREE(self, null)
                 break;
             case JSON_STR:
-                FREE(self->v.string);
-                break;
-            case JSON_NUM:
-            case JSON_BOOL:
+                JSON_FREE(self, string);
                 break;
             case JSON_OBJ:
-                CLEAR_JSON_OBJECT(self->v.object);
+                CLEAR_JSON_OBJECT(self);
                 break;
             case JSON_ARR:
-                CLEAR_JSON_ARRAY(self->v.array);
+                CLEAR_JSON_ARRAY(self);
+                break;
+            default:
                 break;
         }
     }
@@ -219,9 +235,10 @@
     }
 
     #define FREE_INTERNAL_BUCKET(_del, ptr) \
-        if (ptr && _del) \
+        if (ptr && _del) { \
             _del(&ptr->data); \
-        FREE(ptr)
+            FREE(ptr); \
+        }
 
     #define RESET_STRUCTURE_JSON(st) \
         do { \
@@ -244,11 +261,18 @@
 
     bool json_parse_array(struct json *conf, char const **buffer);
     bool json_parse_string(struct json *conf, char const **buffer);
+    bool json_parse_string_internal(char **res, char const **buffer);
     bool json_parse_number(struct json *conf, char const **buffer);
     bool json_parse_boolean(struct json *conf, char const **buff);
     bool json_parse_null(struct json *conf, char const **buff);
     bool json_parse_object(struct json *conf, char const **buff);
 
     void json_parse_withe_space(char const **buff);
+
+    bool json_get_array(struct json *self, char *path, struct json *value);
+    bool json_get_object(struct json *self, char *path, struct json *value);
+    OPT(json) json_get(struct json *self, char *path,
+                        enum json_type type_expect);
+    bool json_getter_loop(struct json *self, char *path, struct json *value);
 
 #endif
