@@ -6,6 +6,12 @@
         "window.hpp": "c",
         "system.hpp": "c",
         "noncopyable.hpp": "c",
-        "fileinputstream.hpp": "c"
-    }
+        "fileinputstream.hpp": "c",
+        "eprintf.h": "c",
+        "array": "cpp",
+        "string": "cpp",
+        "string_view": "cpp",
+        "ranges": "cpp"
+    },
+    "DockerRun.DisableAutoGenerateConfig": true
 }
