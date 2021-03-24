@@ -306,7 +306,6 @@ SRC_ERTY		=	$(SRC_EWRITE) 							\
 					$(SRC_JSON)
 
 SRC_IG 	=	./iron_goat/lib/src/chunk.c \
-			./iron_goat/lib/src/deser.c \
 			./iron_goat/lib/src/frame.c \
 			./iron_goat/lib/src/layer.c \
 			./iron_goat/lib/src/map.c \
@@ -319,10 +318,11 @@ SRC_IG 	=	./iron_goat/lib/src/chunk.c \
 			./iron_goat/lib/src/tile.c \
 			./iron_goat/lib/src/tileoffset.c \
 			./iron_goat/lib/src/tileset.c \
-			./iron_goat/lib/src/u64_vector.c \
 			./iron_goat/lib/src/wangcolor.c \
 			./iron_goat/lib/src/wangset.c \
-			./iron_goat/lib/src/wangtile.c
+			./iron_goat/lib/src/wangtile.c \
+			./iron_goat/lib/src/grid.c \
+			./iron_goat/lib/src/get_string.c
 
 SRC 	=	$(SRC_ERTY) \
 			$(SRC_IG)

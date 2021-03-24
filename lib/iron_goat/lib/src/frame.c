@@ -5,4 +5,32 @@
 ** frame
 */
 
+#include <iron_goat/deser.h>
 
+static const struct json_deser_data IG_FRAME[] = {
+    {
+        .data = ".duration",
+        .size_data = sizeof(u64_t),
+        .offset = offsetof(struct iron_goat_frame, duration),
+        .intern = {
+            .callback = NULL,
+            .woff = false
+        },
+        .type = JSON_NUM
+    },
+    {
+        .data = ".tileid",
+        .size_data = sizeof(i64_t),
+        .offset = offsetof(struct iron_goat_frame, tileid),
+        .intern = {
+            .callback = NULL,
+            .woff = false
+        },
+        .type = JSON_NUM
+    }
+};
+
+bool init_iron_goat_frame(struct json *conf, struct iron_goat_frame *self)
+{
+    DESER_LOOP(conf, self, IG_FRAME);
+}

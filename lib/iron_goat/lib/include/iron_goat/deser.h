@@ -10,11 +10,16 @@
 
     #include <iron_goat/tiled.h>
 
+    struct inter_fun {
+        bool (*callback)();
+        bool woff;
+    };
+
     struct json_deser_data {
         char *data;
         const usize_t size_data;
         const usize_t offset;
-        bool (*intern)(struct json *, void **);
+        struct inter_fun intern;
         const int type;
     };
 
@@ -42,8 +47,40 @@
     void destroy_iron_goat_wangcolor(struct iron_goat_wangcolor *self);
     void destroy_iron_goat_wangset(struct iron_goat_wangset *self);
 
-    bool load_iron_goat_u64_vector(struct json *conf, void **data);
+    bool iron_goat_get_string(struct json *conf, size_t offset, void *data);
 
-    bool init_iron_goat_chunk(struct json *conf, void *data);
+    bool init_iron_goat_grid(struct json *conf, struct iron_goat_grid *self);
+    bool init_iron_goat_tileoffset(struct json *conf,
+                                struct iron_goat_tileoffset *self);
+    bool init_iron_goat_frame(struct json *conf, struct iron_goat_frame *self);
+    bool init_iron_goat_tile_terrain(struct json *conf,
+                                struct iron_goat_tile_terrain *self);
+
+    bool init_iron_goat_chunk(struct json *conf, struct iron_goat_chunk *new);
+
+    #define DESER_CALL_INTERN(conf, new, info, tmp, ptr) \
+        ((info[i].intern.woff == false) ? \
+            info[i].intern.callback(conf, new) : \
+            info[i].intern.callback(conf, info[i].offset, new))
+
+    #define DESER_LOOP_INTERN_COPY(conf, new, info, tmp, ptr) \
+        if (info[i].intern.callback != NULL) { \
+            if (DESER_CALL_INTERN(conf, new, info, tmp, ptr) == false) \
+                return (false); \
+        } else { \
+            ememcpy(ptr + info[i].offset, \
+                    &tmp.value.v.null, info[i].size_data); \
+        }
+
+    #define DESER_LOOP(conf, new, info) \
+        for (size_t i = 0; i < ARRAY_SIZE(info); i++) { \
+            OPT(json) tmp = {0}; \
+            char *ptr = (char *)new; \
+            if ((tmp = json_get(conf, info[i].data, \
+                info[i].type)).is_ok == false) \
+                return (false); \
+            DESER_LOOP_INTERN_COPY(conf, new, info, tmp, ptr); \
+        } \
+        return (true)
 
 #endif

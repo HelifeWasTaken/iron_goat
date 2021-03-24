@@ -215,7 +215,7 @@
     struct iron_goat_property {
         char *name;
         ig_property_type_t type;
-        union iron_goat_property_value v;
+        union iron_goat_property_value value;
     };
 
     struct iron_goat_object {
