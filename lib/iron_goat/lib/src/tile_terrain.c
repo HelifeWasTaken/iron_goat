@@ -17,7 +17,7 @@ static bool get_iron_goat_tile_terrain(struct json *conf,
         return (false);
     }
     for (size_t i = 0; i < data->size; i++)
-        self->tile[0] = data->data[0].v.number;
+        self->tile[i] = data->data[i].v.number;
     return (true);
 }
 

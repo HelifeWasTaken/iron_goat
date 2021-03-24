@@ -52,11 +52,19 @@
     bool init_iron_goat_grid(struct json *conf, struct iron_goat_grid *self);
     bool init_iron_goat_tileoffset(struct json *conf,
                                 struct iron_goat_tileoffset *self);
-    bool init_iron_goat_frame(struct json *conf, struct iron_goat_frame *self);
+    bool init_iron_goat_frame(struct json *conf,
+                            struct iron_goat_frame *self);
     bool init_iron_goat_tile_terrain(struct json *conf,
                                 struct iron_goat_tile_terrain *self);
+    bool init_iron_goat_props(struct json *conf,
+                            struct iron_goat_property *self);
 
     bool init_iron_goat_chunk(struct json *conf, struct iron_goat_chunk *new);
+    bool init_iron_goat_terrain(struct json *conf,
+                                struct iron_goat_terrain *self);
+    bool init_iron_goat_wangset(struct json *conf,
+                                struct iron_goat_wangset *self);
+
 
     #define DESER_CALL_INTERN(conf, new, info, tmp, ptr) \
         ((info[i].intern.woff == false) ? \

@@ -35,7 +35,7 @@ static const struct json_deser_data IG_WANGCOLOR[] = {
     },
     {
         .data = ".probability",
-        .size_data = sizeof(f64_t),
+        .size_data = sizeof(i64_t),
         .offset = offsetof(struct iron_goat_wangcolor, probability),
         .intern = {
             .callback = NULL,

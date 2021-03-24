@@ -10,7 +10,7 @@
 static const struct json_deser_data IG_POINT[] = {
     {
         .data = ".x",
-        .size_data = sizeof(f64_t),
+        .size_data = sizeof(i64_t),
         .offset = offsetof(struct iron_goat_point, x),
         .intern = {
             .callback = NULL,
@@ -20,7 +20,7 @@ static const struct json_deser_data IG_POINT[] = {
     },
     {
         .data = ".y",
-        .size_data = sizeof(f64_t),
+        .size_data = sizeof(i64_t),
         .offset = offsetof(struct iron_goat_point, y),
         .intern = {
             .callback = NULL,

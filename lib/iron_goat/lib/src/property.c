@@ -86,7 +86,7 @@ static const struct json_deser_data IG_PROPS[] = {
     }
 };
 
-bool init_iron_goat_props(struct json *conf, struct iron_goat_chunk *self)
+bool init_iron_goat_props(struct json *conf, struct iron_goat_property *self)
 {
     DESER_LOOP(conf, self, IG_PROPS);
 }

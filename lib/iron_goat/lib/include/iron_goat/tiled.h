@@ -132,7 +132,7 @@
     union iron_goat_property_value {
         char *str;
         i64_t i;
-        f64_t f;
+        i64_t f;
         bool b;
         u32_t color;
         char *file;
@@ -167,7 +167,7 @@
     struct iron_goat_wangcolor {
         u32_t color;
         char *name;
-        f64_t probability;
+        i64_t probability;
         u64_t tile;
     };
 
@@ -219,18 +219,17 @@
     };
 
     struct iron_goat_object {
-        ig_object_type_t kind;
-        f64_t height;
+        i64_t height;
         u64_t id;
         char *name;
         VECTOR(ig_prop) *properties;
-        f64_t rotation;
+        i64_t rotation;
         char *template;
         char *type;
         bool visible;
-        f64_t width;
-        f64_t x;
-        f64_t y;
+        i64_t width;
+        i64_t x;
+        i64_t y;
         u64_t gid;
         VECTOR(ig_point) *polygon;
         VECTOR(ig_text) *text;
@@ -252,8 +251,8 @@
     };
 
     struct iron_goat_point {
-        f64_t x;
-        f64_t y;
+        i64_t x;
+        i64_t y;
     };
 
     struct iron_goat_chunk {
@@ -275,9 +274,9 @@
         u64_t height;
         i64_t startx;
         i64_t starty;
-        f64_t offsetx;
-        f64_t offsety;
-        f64_t opacity;
+        i64_t offsetx;
+        i64_t offsety;
+        i64_t opacity;
         bool visible;
         ig_layer_type_t type;
         VECTOR(ig_chunk) *chunks;
@@ -302,7 +301,7 @@
         u64_t imageheight;
         u64_t imagewidth;
         OPT(ig_layer) objectgroup;
-        f64_t probability;
+        i64_t probability;
         VECTOR(ig_prop) *properties;
         OPT(ig_tile_terrain) terrain;
         char *type;

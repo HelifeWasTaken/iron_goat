@@ -13,6 +13,23 @@ void destroy_iron_goat_terrain(struct iron_goat_terrain *self)
     self->props->clear(&self->props);
 }
 
+static bool load_iron_goat_prop_terrain_vector(struct json *conf,
+                                        struct iron_goat_terrain *self)
+{
+    struct json_array *data = conf->v.array;
+    struct iron_goat_property prop = {0};
+
+    if ((self->props = VECTOR_CREATE(ig_prop)) == NULL)
+        return (false);
+    for (size_t i = 0; data->size; i++) {
+        prop = (struct iron_goat_property){0};
+        init_iron_goat_props(&data->data[i], &prop);
+        if (self->props->push_back(&self->props, prop) == -1)
+            return (false);
+    }
+    return (true);
+}
+
 static const struct json_deser_data IG_TERRAIN[] = {
     {
         .data = ".name",
@@ -29,7 +46,7 @@ static const struct json_deser_data IG_TERRAIN[] = {
         .size_data = sizeof(VECTOR(ig_prop) *),
         .offset = offsetof(struct iron_goat_terrain, props),
         .intern = {
-            .callback = //,
+            .callback = load_iron_goat_prop_terrain_vector,
             .woff = false
         },
         .type = JSON_ARR
