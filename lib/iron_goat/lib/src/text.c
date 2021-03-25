@@ -71,17 +71,19 @@ static const struct json_deser_data IG_TEXT[] = {
             .callback = NULL,
             .woff = false
         },
-        .type = JSON_BOOL
+        .type = JSON_BOOL,
+        .opt = false
     },
     {
         .data = ".color",
         .size_data = sizeof(u32_t),
         .offset = offsetof(struct iron_goat_text, color),
         .intern = {
-            .callback = NULL,
-            .woff = false
+            .callback = iron_goat_get_color,
+            .woff = true
         },
-        .type = JSON_STR
+        .type = JSON_STR,
+        .opt = false
     },
     {
         .data = ".fontfamily",
@@ -91,7 +93,8 @@ static const struct json_deser_data IG_TEXT[] = {
             .callback = iron_goat_get_string,
             .woff = true
         },
-        .type = JSON_STR
+        .type = JSON_STR,
+        .opt = false
     },
     {
         .data = ".halign",
@@ -101,7 +104,8 @@ static const struct json_deser_data IG_TEXT[] = {
             .callback = iron_goat_text_load_halign,
             .woff = false
         },
-        .type = JSON_STR
+        .type = JSON_STR,
+        .opt = false
     },
     {
         .data = ".italic",
@@ -111,7 +115,8 @@ static const struct json_deser_data IG_TEXT[] = {
             .callback = NULL,
             .woff = false
         },
-        .type = JSON_BOOL
+        .type = JSON_BOOL,
+        .opt = false
     },
     {
         .data = ".kerning",
@@ -121,7 +126,8 @@ static const struct json_deser_data IG_TEXT[] = {
             .callback = NULL,
             .woff = false
         },
-        .type = JSON_BOOL
+        .type = JSON_BOOL,
+        .opt = false
     },
     {
         .data = ".pixelsize",
@@ -131,7 +137,8 @@ static const struct json_deser_data IG_TEXT[] = {
             .callback = NULL,
             .woff = false
         },
-        .type = JSON_NUM
+        .type = JSON_NUM,
+        .opt = false
     },
     {
         .data = ".strikeout",
@@ -141,7 +148,8 @@ static const struct json_deser_data IG_TEXT[] = {
             .callback = NULL,
             .woff = false
         },
-        .type = JSON_BOOL
+        .type = JSON_BOOL,
+        .opt = false
     },
     {
         .data = ".text",
@@ -151,7 +159,8 @@ static const struct json_deser_data IG_TEXT[] = {
             .callback = iron_goat_get_string,
             .woff = true
         },
-        .type = JSON_STR
+        .type = JSON_STR,
+        .opt = false
     },
     {
         .data = ".underline",
@@ -161,7 +170,8 @@ static const struct json_deser_data IG_TEXT[] = {
             .callback = NULL,
             .woff = false
         },
-        .type = JSON_BOOL
+        .type = JSON_BOOL,
+        .opt = false
     },
     {
         .data = ".valign",
@@ -171,7 +181,8 @@ static const struct json_deser_data IG_TEXT[] = {
             .callback = iron_goat_load_valign,
             .woff = false
         },
-        .type = JSON_STR
+        .type = JSON_STR,
+        .opt = false
     },
     {
         .data = ".wrap",
@@ -181,7 +192,8 @@ static const struct json_deser_data IG_TEXT[] = {
             .callback = NULL,
             .woff = false
         },
-        .type = JSON_BOOL
+        .type = JSON_BOOL,
+        .opt = false
     }
 };
 

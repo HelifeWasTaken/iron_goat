@@ -12,16 +12,35 @@ void destroy_iron_goat_wangcolor(struct iron_goat_wangcolor *self)
     FREE(self->name);
 }
 
+bool load_iron_goat_wangcolor_properties(struct json *conf,
+    struct iron_goat_wangcolor *self)
+{
+    struct json_array *data = conf->v.array;
+    struct iron_goat_property prop = {0};
+
+    if ((self->properties = VECTOR_CREATE(ig_prop)) == NULL)
+        return (false);
+    for (size_t i = 0; i < data->size; i++) {
+        prop = (struct iron_goat_property){0};
+        if (init_iron_goat_props(&data->data[i], &prop) == false)
+            return (false);
+        if (self->properties->push_back(&self->properties, prop) == -1)
+            return (false);
+    }
+    return (true);
+}
+
 static const struct json_deser_data IG_WANGCOLOR[] = {
     {
         .data = ".color",
         .size_data = sizeof(u32_t),
         .offset = offsetof(struct iron_goat_wangcolor, color),
         .intern = {
-            .callback = NULL,
-            .woff = false
+            .callback = iron_goat_get_color,
+            .woff = true
         },
-        .type = JSON_NUM
+        .type = JSON_STR,
+        .opt = false
     },
     {
         .data = ".name",
@@ -31,7 +50,8 @@ static const struct json_deser_data IG_WANGCOLOR[] = {
             .callback = NULL,
             .woff = false
         },
-        .type = JSON_STR
+        .type = JSON_STR,
+        .opt = false
     },
     {
         .data = ".probability",
@@ -41,7 +61,19 @@ static const struct json_deser_data IG_WANGCOLOR[] = {
             .callback = NULL,
             .woff = false
         },
-        .type = JSON_NUM
+        .type = JSON_NUM,
+        .opt = false
+    },
+    {
+        .data = ".properties",
+        .size_data = sizeof(VECTOR(ig_prop) *),
+        .offset = offsetof(struct iron_goat_wangcolor, properties),
+        .intern = {
+            .callback = load_iron_goat_wangcolor_properties,
+            .woff = false
+        },
+        .type = JSON_ARR,
+        .opt = false
     },
     {
         .data = ".tile",
@@ -51,7 +83,8 @@ static const struct json_deser_data IG_WANGCOLOR[] = {
             .callback = NULL,
             .woff = false
         },
-        .type = JSON_NUM
+        .type = JSON_NUM,
+        .opt = false
     }
 };
 

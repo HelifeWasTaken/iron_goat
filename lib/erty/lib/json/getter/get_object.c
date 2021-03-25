@@ -38,7 +38,6 @@ bool json_get_object(struct json *self, char *path, struct json *value)
         return (false);
     object = self->v.object;
     if ((tmp = object->get(&object, obj)).is_ok == false) {
-        ASSERT("Json", "Could not find one of the objects");
         FREE(obj);
         return (false);
     }

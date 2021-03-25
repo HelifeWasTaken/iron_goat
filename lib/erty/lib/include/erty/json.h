@@ -271,6 +271,7 @@
                         enum json_type type_expect);
     bool json_getptr(struct json *self, struct json *ptr,
                 char *path, enum json_type type_expect);
+    bool json_exist(struct json *self, char *path, enum json_type type_expect);
     bool json_getter_loop(struct json *self, char *path, struct json *value);
 
 #endif

@@ -16,8 +16,6 @@ void destroy_iron_goat_object(struct iron_goat_object *self)
     FREE(self->type);
     if (self->polygon)
         self->polygon->clear(&self->polygon);
-    if (self->text)
-        self->text->clear(&self->text);
 }
 
 static bool iron_goat_object_load_props(struct json *conf,
@@ -28,9 +26,10 @@ static bool iron_goat_object_load_props(struct json *conf,
 
     if ((self->properties = VECTOR_CREATE(ig_prop)) == NULL)
         return (false);
-    for (size_t i = 0; data->size; i++) {
+    for (size_t i = 0; i < data->size; i++) {
         prop = (struct iron_goat_property){0};
-        init_iron_goat_props(&data->data[i], &prop);
+        if (init_iron_goat_props(&data->data[i], &prop) == false)
+            return (false);
         if (self->properties->push_back(&self->properties, prop) == -1)
             return (false);
     }
@@ -45,27 +44,11 @@ static bool iron_goat_object_load_polygon(struct json *conf,
 
     if ((self->polygon = VECTOR_CREATE(ig_point)) == NULL)
         return (false);
-    for (size_t i = 0; data->size; i++) {
+    for (size_t i = 0; i < data->size; i++) {
         point = (struct iron_goat_point){0};
-        init_iron_goat_props(&data->data[i], &point);
-        if (self->polygon->push_back(&self->polygon, point) == -1)
+        if (init_iron_goat_point(&data->data[i], &point) == false)
             return (false);
-    }
-    return (true);
-}
-
-static bool iron_goat_object_load_text(struct json *conf,
-    struct iron_goat_object *self)
-{
-    struct json_array *data = conf->v.array;
-    struct iron_goat_text text = {0};
-
-    if ((self->text = VECTOR_CREATE(ig_text)) == NULL)
-        return (false);
-    for (size_t i = 0; data->size; i++) {
-        text = (struct iron_goat_text){0};
-        init_iron_goat_props(&data->data[i], &text);
-        if (self->text->push_back(&self->polygon, text) == -1)
+        if (self->polygon->push_back(&self->polygon, point) == -1)
             return (false);
     }
     return (true);
@@ -73,104 +56,15 @@ static bool iron_goat_object_load_text(struct json *conf,
 
 static const struct json_deser_data IG_OBJECT[] = {
     {
-        .data = ".height",
-        .size_data = sizeof(i64_t),
-        .offset = offsetof(struct iron_goat_object, height),
-        .intern = {
-            .callback = NULL,
-            .woff = false
-        },
-        .type = JSON_NUM
-    },
-    {
-        .data = ".id",
-        .size_data = sizeof(u64_t),
-        .offset = offsetof(struct iron_goat_object, id),
-        .intern = {
-            .callback = NULL,
-            .woff = false
-        },
-        .type = JSON_NUM
-    },
-    {
-        .data = ".name",
-        .size_data = sizeof(char *),
-        .offset = offsetof(struct iron_goat_object, name),
-        .intern = {
-            .callback = iron_goat_get_string,
-            .woff = true
-        },
-        .type = JSON_STR
-    },
-    {
-        .data = ".properties",
-        .size_data = sizeof(VECTOR(ig_prop) *),
-        .offset = offsetof(struct iron_goat_object, properties),
-        .intern = {
-            .callback = iron_goat_object_load_props,
-            .woff = false
-        },
-        .type = JSON_ARR
-    },
-    {
-        .data = ".rotation",
-        .size_data = sizeof(i64_t),
-        .offset = offsetof(struct iron_goat_object, rotation),
-        .intern = {
-            .callback = NULL,
-            .woff = false
-        },
-        .type = JSON_NUM
-    },
-    {
-        .data = ".template",
-        .size_data = sizeof(char *),
-        .offset = offsetof(struct iron_goat_object, template),
-        .intern = {
-            .callback = iron_goat_get_string,
-            .woff = true
-        },
-        .type = JSON_STR
-    },
-    {
-        .data = ".type",
-        .size_data = sizeof(char *),
-        .offset = offsetof(struct iron_goat_object, type),
-        .intern = {
-            .callback = iron_goat_get_string,
-            .woff = true
-        },
-        .type = JSON_STR
-    },
-    {
-        .data = ".visible",
+        .data = ".ellipse",
         .size_data = sizeof(bool),
-        .offset = offsetof(struct iron_goat_object, visible),
+        .offset = offsetof(struct iron_goat_object, ellipse),
         .intern = {
             .callback = NULL,
             .woff = false
         },
-        .type = JSON_BOOL
-    },
-    {
-        .data = ".width",
-        .size_data = sizeof(i64_t),
-        .offset = offsetof(struct iron_goat_object, width),
-        .intern = {
-            .callback = NULL,
-            .woff = false
-        },
-        .type = JSON_NUM
-    },
-    {
-        .data = ".x",
-        .size_data = sizeof(i64_t),
-        .offset = offsetof(struct iron_goat_object, x),
-        .intern = {
-            .callback = NULL,
-            .woff = false
-        },
-        .type = JSON_NUM
+        .type = JSON_BOOL,
+        .opt = false
     },
     {
         .data = ".gid",
@@ -180,7 +74,52 @@ static const struct json_deser_data IG_OBJECT[] = {
             .callback = NULL,
             .woff = false
         },
-        .type = JSON_NUM
+        .type = JSON_NUM,
+        .opt = false
+    },
+    {
+        .data = ".height",
+        .size_data = sizeof(i64_t),
+        .offset = offsetof(struct iron_goat_object, height),
+        .intern = {
+            .callback = NULL,
+            .woff = false
+        },
+        .type = JSON_NUM,
+        .opt = false
+    },
+    {
+        .data = ".id",
+        .size_data = sizeof(u64_t),
+        .offset = offsetof(struct iron_goat_object, id),
+        .intern = {
+            .callback = NULL,
+            .woff = false
+        },
+        .type = JSON_NUM,
+        .opt = false
+    },
+    {
+        .data = ".name",
+        .size_data = sizeof(char *),
+        .offset = offsetof(struct iron_goat_object, name),
+        .intern = {
+            .callback = iron_goat_get_string,
+            .woff = true
+        },
+        .type = JSON_STR,
+        .opt = false
+    },
+    {
+        .data = ".point",
+        .size_data = sizeof(bool),
+        .offset = offsetof(struct iron_goat_object, point),
+        .intern = {
+            .callback = NULL,
+            .woff = false
+        },
+        .type = JSON_BOOL,
+        .opt = false
     },
     {
         .data = ".polygon",
@@ -190,21 +129,100 @@ static const struct json_deser_data IG_OBJECT[] = {
             .callback = iron_goat_object_load_polygon,
             .woff = false
         },
-        .type = JSON_ARR
+        .type = JSON_ARR,
+        .opt = false
     },
     {
-        .data = ".text",
-        .size_data = sizeof(VECTOR(ig_text)),
-        .offset = offsetof(struct iron_goat_object, text),
+        .data = ".properties",
+        .size_data = sizeof(VECTOR(ig_prop) *),
+        .offset = offsetof(struct iron_goat_object, properties),
         .intern = {
-            .callback = iron_goat_object_load_text,
+            .callback = iron_goat_object_load_props,
             .woff = false
         },
-        .type = JSON_ARR
+        .type = JSON_ARR,
+        .opt = false
+    },
+    {
+        .data = ".rotation",
+        .size_data = sizeof(i64_t),
+        .offset = offsetof(struct iron_goat_object, rotation),
+        .intern = {
+            .callback = NULL,
+            .woff = false
+        },
+        .type = JSON_NUM,
+        .opt = false
+    },
+    {
+        .data = ".template",
+        .size_data = sizeof(char *),
+        .offset = offsetof(struct iron_goat_object, template),
+        .intern = {
+            .callback = iron_goat_get_string,
+            .woff = true
+        },
+        .type = JSON_STR,
+        .opt = false
+    },
+    {
+        .data = ".type",
+        .size_data = sizeof(char *),
+        .offset = offsetof(struct iron_goat_object, type),
+        .intern = {
+            .callback = iron_goat_get_string,
+            .woff = true
+        },
+        .type = JSON_STR,
+        .opt = false
+    },
+    {
+        .data = ".visible",
+        .size_data = sizeof(bool),
+        .offset = offsetof(struct iron_goat_object, visible),
+        .intern = {
+            .callback = NULL,
+            .woff = false
+        },
+        .type = JSON_BOOL,
+        .opt = false
+    },
+    {
+        .data = ".width",
+        .size_data = sizeof(i64_t),
+        .offset = offsetof(struct iron_goat_object, width),
+        .intern = {
+            .callback = NULL,
+            .woff = false
+        },
+        .type = JSON_NUM,
+        .opt = false
+    },
+    {
+        .data = ".x",
+        .size_data = sizeof(i64_t),
+        .offset = offsetof(struct iron_goat_object, x),
+        .intern = {
+            .callback = NULL,
+            .woff = false
+        },
+        .type = JSON_NUM,
+        .opt = false
+    },
+    {
+        .data = ".y",
+        .size_data = sizeof(i64_t),
+        .offset = offsetof(struct iron_goat_object, y),
+        .intern = {
+            .callback = NULL,
+            .woff = false
+        },
+        .type = JSON_NUM,
+        .opt = false
     }
 };
 
-static bool iron_goat_load_object(struct json *conf,
+bool init_iron_goat_object(struct json *conf,
     struct iron_goat_object *self)
 {
     DESER_LOOP(conf, self, IG_OBJECT);

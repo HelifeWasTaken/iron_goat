@@ -4,7 +4,8 @@
             "name": "Linux",
             "includePath": [
                 "${workspaceFolder}/**",
-                "${workspaceFolder}/erty/lib/include"
+                "${workspaceFolder}/erty/lib/include",
+                "${workspaceFolder}/lib/iron_goat/lib/include"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/clang",

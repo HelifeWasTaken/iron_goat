@@ -30,7 +30,8 @@ static const struct json_deser_data IG_TILE_TERRAIN[] = {
             .callback = get_iron_goat_tile_terrain,
             .woff = false
         },
-        .type = JSON_ARR
+        .type = JSON_ARR,
+        .opt = false
     }
 };
 

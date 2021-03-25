@@ -10,7 +10,8 @@
 void destroy_iron_goat_terrain(struct iron_goat_terrain *self)
 {
     FREE(self->name);
-    self->props->clear(&self->props);
+    if (self->properties)
+        self->properties->clear(&self->properties);
 }
 
 static bool load_iron_goat_prop_terrain_vector(struct json *conf,
@@ -19,12 +20,12 @@ static bool load_iron_goat_prop_terrain_vector(struct json *conf,
     struct json_array *data = conf->v.array;
     struct iron_goat_property prop = {0};
 
-    if ((self->props = VECTOR_CREATE(ig_prop)) == NULL)
+    if ((self->properties = VECTOR_CREATE(ig_prop)) == NULL)
         return (false);
-    for (size_t i = 0; data->size; i++) {
+    for (size_t i = 0; i < data->size; i++) {
         prop = (struct iron_goat_property){0};
         init_iron_goat_props(&data->data[i], &prop);
-        if (self->props->push_back(&self->props, prop) == -1)
+        if (self->properties->push_back(&self->properties, prop) == -1)
             return (false);
     }
     return (true);
@@ -39,17 +40,19 @@ static const struct json_deser_data IG_TERRAIN[] = {
             .callback = iron_goat_get_string,
             .woff = true
         },
-        .type = JSON_STR
+        .type = JSON_STR,
+        .opt = false
     },
     {
-        .data = ".props",
+        .data = ".properties",
         .size_data = sizeof(VECTOR(ig_prop) *),
-        .offset = offsetof(struct iron_goat_terrain, props),
+        .offset = offsetof(struct iron_goat_terrain, properties),
         .intern = {
             .callback = load_iron_goat_prop_terrain_vector,
             .woff = false
         },
-        .type = JSON_ARR
+        .type = JSON_ARR,
+        .opt = false
     },
     {
         .data = ".tile",
@@ -59,7 +62,8 @@ static const struct json_deser_data IG_TERRAIN[] = {
             .callback = NULL,
             .woff = false
         },
-        .type = JSON_NUM
+        .type = JSON_NUM,
+        .opt = false
     },
 };
 

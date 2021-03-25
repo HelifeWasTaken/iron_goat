@@ -322,7 +322,8 @@ SRC_IG 	=	./iron_goat/lib/src/chunk.c \
 			./iron_goat/lib/src/wangset.c \
 			./iron_goat/lib/src/wangtile.c \
 			./iron_goat/lib/src/grid.c \
-			./iron_goat/lib/src/get_string.c
+			./iron_goat/lib/src/get_string.c \
+			./iron_goat/lib/src/hexatoint.c
 
 SRC 	=	$(SRC_ERTY) \
 			$(SRC_IG)
@@ -351,6 +352,7 @@ build_lib: $(OBJ) ## Build The other one
 
 clean:
 	@rm -rf $(OBJ)
+	@rm -rf $(NAME)
 
 fclean: clean
 

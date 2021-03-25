@@ -16,7 +16,8 @@ static const struct json_deser_data IG_FRAME[] = {
             .callback = NULL,
             .woff = false
         },
-        .type = JSON_NUM
+        .type = JSON_NUM,
+        .opt = false
     },
     {
         .data = ".tileid",
@@ -26,7 +27,8 @@ static const struct json_deser_data IG_FRAME[] = {
             .callback = NULL,
             .woff = false
         },
-        .type = JSON_NUM
+        .type = JSON_NUM,
+        .opt = false
     }
 };
 

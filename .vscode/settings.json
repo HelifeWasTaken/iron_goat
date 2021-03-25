@@ -12,7 +12,8 @@
         "string": "cpp",
         "string_view": "cpp",
         "ranges": "cpp",
-        "deser.h": "c"
+        "deser.h": "c",
+        "tiled.h": "c"
     },
     "DockerRun.DisableAutoGenerateConfig": true
 }

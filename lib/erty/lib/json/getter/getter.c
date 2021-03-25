@@ -59,3 +59,16 @@ bool json_getptr(struct json *self, struct json *ptr,
     ASSERT("Json", "Argument asked was not found");
     return (false);
 }
+
+bool json_exist(struct json *self, char *path, enum json_type type_expect)
+{
+    struct json value = {0};
+
+    if (json_getter_loop(self, path, &value) == true) {
+        if (value.t == type_expect)
+            return (true);
+        else
+            return (false);
+    }
+    return (false);
+}

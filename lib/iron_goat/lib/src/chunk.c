@@ -19,10 +19,6 @@ static bool load_iron_goat_chunk_data(struct json *conf,
         return (false);
     }
     for (size_t i = 0; i < real_data->size; i++) {
-        if (real_data->data[i].t != JSON_NUM) {
-            ASSERT("IronGoat", "Data chunk field is corrupted");
-            return (false);
-        }
         v = real_data->data[i].v.number;
         if (vec->push_back(&vec, v) == -1) {
             ASSERT("IronGoat", "Allocation error");
@@ -42,7 +38,8 @@ static const struct json_deser_data IG_CHUNK_DATA[] = {
             .callback = load_iron_goat_chunk_data,
             .woff = false
         },
-        .type = JSON_ARR
+        .type = JSON_ARR,
+        .opt = false
     },
     {
         .data = ".height",
@@ -53,6 +50,7 @@ static const struct json_deser_data IG_CHUNK_DATA[] = {
             .woff = false
         },
         .type = JSON_NUM,
+        .opt = false
     },
     {
         .data = ".width",
@@ -62,7 +60,8 @@ static const struct json_deser_data IG_CHUNK_DATA[] = {
             .callback = NULL,
             .woff = false
         },
-        .type = JSON_NUM
+        .type = JSON_NUM,
+        .opt = false
     },
     {
         .data = ".x",
@@ -72,7 +71,8 @@ static const struct json_deser_data IG_CHUNK_DATA[] = {
             .callback = NULL,
             .woff = false
         },
-        .type = JSON_NUM
+        .type = JSON_NUM,
+        .opt = false
     },
     {
         .data = ".y",
@@ -82,13 +82,15 @@ static const struct json_deser_data IG_CHUNK_DATA[] = {
             .callback = NULL,
             .woff = false
         },
+        .opt = false,
         .type = JSON_NUM
     }
 };
 
 void destroy_iron_goat_chunk(struct iron_goat_chunk *self)
 {
-    self->data->clear(&self->data);
+    if (self->data)
+        self->data->clear(&self->data);
 }
 
 bool init_iron_goat_chunk(struct json *conf, struct iron_goat_chunk *new)

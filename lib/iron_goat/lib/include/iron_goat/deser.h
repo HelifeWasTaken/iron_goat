@@ -21,6 +21,7 @@
         const usize_t offset;
         struct inter_fun intern;
         const int type;
+        bool opt;
     };
 
     struct json_deser {
@@ -48,6 +49,7 @@
     void destroy_iron_goat_wangset(struct iron_goat_wangset *self);
 
     bool iron_goat_get_string(struct json *conf, size_t offset, void *data);
+    bool iron_goat_get_color(struct json *conf, size_t offset, void *data);
 
     bool init_iron_goat_grid(struct json *conf, struct iron_goat_grid *self);
     bool init_iron_goat_tileoffset(struct json *conf,
@@ -58,18 +60,30 @@
                                 struct iron_goat_tile_terrain *self);
     bool init_iron_goat_props(struct json *conf,
                             struct iron_goat_property *self);
+    bool init_iron_goat_text(struct json *conf, struct iron_goat_text *self);
+    bool init_iron_goat_point(struct json *conf, struct iron_goat_point *self);
 
     bool init_iron_goat_chunk(struct json *conf, struct iron_goat_chunk *new);
     bool init_iron_goat_terrain(struct json *conf,
                                 struct iron_goat_terrain *self);
     bool init_iron_goat_wangset(struct json *conf,
                                 struct iron_goat_wangset *self);
+    bool init_iron_goat_wangcolor(struct json *conf,
+                            struct iron_goat_wangcolor *self);
+    bool init_iron_goat_wangtile(struct json *conf,
+        struct iron_goat_wangtile *self);
+    bool init_iron_goat_tile(struct json *conf, struct iron_goat_tile *self);
+    bool init_iron_goat_layer(struct json *conf, struct iron_goat_layer *self);
+    bool init_iron_goat_object(struct json *conf,
+                            struct iron_goat_object *self);
+    bool init_iron_goat_map(struct json *conf, struct iron_goat_map *self);
 
+    bool hextoint(char const *str, u32_t *nb);
 
     #define DESER_CALL_INTERN(conf, new, info, tmp, ptr) \
         ((info[i].intern.woff == false) ? \
-            info[i].intern.callback(conf, new) : \
-            info[i].intern.callback(conf, info[i].offset, new))
+            info[i].intern.callback(&tmp.value, new) : \
+            info[i].intern.callback(&tmp.value, info[i].offset, new))
 
     #define DESER_LOOP_INTERN_COPY(conf, new, info, tmp, ptr) \
         if (info[i].intern.callback != NULL) { \
@@ -81,14 +95,26 @@
         }
 
     #define DESER_LOOP(conf, new, info) \
+        ememset(new, 0, sizeof(new)); \
         for (size_t i = 0; i < ARRAY_SIZE(info); i++) { \
             OPT(json) tmp = {0}; \
             char *ptr = (char *)new; \
+            DEBUG_PRINTF("Loading %s data", info[i].data); \
+            if (info[i].opt == true) { \
+                if (json_exist(conf, info[i].data, info[i].type) == false) { \
+                    DEBUG_PRINTF("Data did not exist"); \
+                    continue; \
+                } \
+            } \
             if ((tmp = json_get(conf, info[i].data, \
                 info[i].type)).is_ok == false) \
                 return (false); \
             DESER_LOOP_INTERN_COPY(conf, new, info, tmp, ptr); \
+            DEBUG_PRINTF("Data sucessfully loaded"); \
         } \
         return (true)
+
+    #define SET_ATTRIBUTE(ptr, offset, size, value) \
+        ememcpy((unsigned char *)ptr + offset, &value, size)
 
 #endif

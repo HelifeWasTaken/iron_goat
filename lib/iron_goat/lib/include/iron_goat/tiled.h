@@ -32,6 +32,9 @@
     typedef struct iron_goat_wangset ig_wangset_t;
     typedef struct iron_goat_tileset ig_goat_tileset_t;
 
+    INIT_VECTOR(ig_u64, u64_t, NULL);
+    INIT_VECTOR(ig_i64, i64_t, NULL);
+
     void destroy_iron_goat_wangset(struct iron_goat_wangset *self);
     void destroy_iron_goat_chunk(struct iron_goat_chunk *self);
     void destroy_iron_goat_layer(struct iron_goat_layer *self);
@@ -46,6 +49,7 @@
     void destroy_iron_goat_wangset(struct iron_goat_wangset *self);
 
     typedef enum {
+        MAP_ORIENT_NONE,
         MAP_ORTHOGONAL,
         MAP_ISOMETRIC,
         MAP_STAGGERED,
@@ -53,6 +57,7 @@
     } ig_map_orient_t;
 
     typedef enum {
+        MAP_RENDER_NONE,
         MAP_RIGHT_DOWN,
         MAP_RIGHT_UP,
         MAP_LEFT_DOWN,
@@ -60,6 +65,7 @@
     } ig_map_renderorder_t;
 
     typedef enum {
+        MAP_STAG_NONE,
         MAP_STAG_X,
         MAP_STAG_Y
     } ig_map_staggeraxis_t;
@@ -70,17 +76,13 @@
     } ig_map_staggerindex_t;
 
     typedef enum {
-        LAYER_ZLIB,
-        LAYER_GZIP,
-        LAYER_NONE
-    } ig_layer_compression_t;
-
-    typedef enum {
+        LAYER_DRAWORDER_NONE,
         LAYER_TOPDOWN,
         LAYER_INDEX
     } ig_layer_draworder_t;
 
     typedef enum {
+        LAYER_TYPE_NONE,
         LAYER_TILELAYER,
         LAYER_OBJECTGROUP,
         LAYER_IMAGELAYER,
@@ -88,11 +90,13 @@
     } ig_layer_type_t;
 
     typedef enum {
+        LAYER_ENCODE_NONE,
         LAYER_CSV,
-        BASE64
+        LAYER_BASE64
     } ig_layer_encoding_t;
 
     typedef enum {
+        HALIGN_NONE,
         HALIGN_CENTER,
         HALIGN_RIGHT,
         HALIGN_JUSTIFY,
@@ -100,12 +104,14 @@
     } ig_text_halign_t;
 
     typedef enum {
+        VALIGN_NONE,
         VALIGN_CENTER,
         VALIGN_BOTTOM,
         VALIGN_TOP
     } ig_text_valign_t;
 
     typedef enum {
+        OBJECT_NONE,
         OBJECT_ELLIPSE,
         OBJECT_POINT,
         OBJECT_RECT,
@@ -116,6 +122,7 @@
     } ig_object_type_t;
 
     typedef enum {
+        PROP_NONE,
         PROP_STRING,
         PROP_INT,
         PROP_FLOAT,
@@ -125,6 +132,7 @@
     } ig_property_type_t;
 
     typedef enum {
+        GRID_NONE,
         GRID_ORTHOGONAL,
         GRID_ISOMETRIC
     } ig_grid_orientation_t;
@@ -156,7 +164,7 @@
 
     struct iron_goat_terrain {
         char *name;
-        VECTOR(ig_prop) *props;
+        VECTOR(ig_prop) *properties;
         u64_t tile;
     };
 
@@ -168,15 +176,13 @@
         u32_t color;
         char *name;
         i64_t probability;
+        VECTOR(ig_prop) *properties;
         u64_t tile;
     };
 
     struct iron_goat_wangtile {
-        bool dflip;
-        bool hflip;
-        u64_t tileid;
-        bool vflip;
-        u8_t wangid;
+        i64_t tileid;
+        u8_t wangid[8];
     };
 
     struct iron_goat_wangset {
@@ -188,11 +194,13 @@
         VECTOR(ig_wangtile) *wangtiles;
     };
 
+    INIT_OPT(ig_grid, ig_grid_t);
+
     struct iron_goat_tileset {
         u32_t backgroundcolor;
         u64_t columns;
         u64_t firstgid;
-        ig_grid_t grid;
+        OPT(ig_grid) grid;
         char *image;
         u64_t imageheight;
         u64_t imagewidth;
@@ -209,6 +217,7 @@
         VECTOR(ig_tile) *tiles;
         u64_t tilewidth;
         OPT(u32) transparentcolor;
+        char *type;
         VECTOR(ig_wangset) *wangsets;
     };
 
@@ -219,9 +228,13 @@
     };
 
     struct iron_goat_object {
+        bool ellipse;
+        u64_t gid;
         i64_t height;
         u64_t id;
         char *name;
+        bool point;
+        VECTOR(ig_point) *polygon;
         VECTOR(ig_prop) *properties;
         i64_t rotation;
         char *template;
@@ -230,9 +243,6 @@
         i64_t width;
         i64_t x;
         i64_t y;
-        u64_t gid;
-        VECTOR(ig_point) *polygon;
-        VECTOR(ig_text) *text;
     };
 
     struct iron_goat_text {
@@ -266,29 +276,29 @@
     INIT_VECTOR(ig_obj, struct iron_goat_object, destroy_iron_goat_object);
 
     struct iron_goat_layer {
-        u64_t id;
-        char *name;
-        i64_t x;
-        i64_t y;
-        u64_t width;
+        VECTOR(ig_chunk) *chunks;
+        VECTOR(ig_u64) *data;
+        ig_layer_draworder_t draworder;
+        ig_layer_encoding_t encoding;
         u64_t height;
-        i64_t startx;
-        i64_t starty;
+        u64_t id;
+        char *image;
+        VECTOR(ig_layer) *layers;
+        char *name;
+        VECTOR(ig_obj) *objects;
         i64_t offsetx;
         i64_t offsety;
         i64_t opacity;
-        bool visible;
-        ig_layer_type_t type;
-        VECTOR(ig_chunk) *chunks;
-        ig_layer_compression_t compression;
-        VECTOR(ig_u64) *data;
-        ig_layer_encoding_t encoding;
-        ig_layer_draworder_t draworder;
-        VECTOR(ig_obj) objects;
-        u32_t transparentcolor;
-        char *image;
-        VECTOR(ig_layer) *layers;
         VECTOR(ig_prop) *properties;
+        i64_t startx;
+        i64_t starty;
+        u32_t tintcolor;
+        u32_t transparentcolor;
+        ig_layer_type_t type;
+        bool visible;
+        u64_t width;
+        i64_t x;
+        i64_t y;
     };
 
     INIT_VECTOR(ig_layer, struct iron_goat_layer, destroy_iron_goat_layer);
@@ -301,7 +311,7 @@
         u64_t imageheight;
         u64_t imagewidth;
         OPT(ig_layer) objectgroup;
-        i64_t probability;
+        OPT(ig_i64) probability;
         VECTOR(ig_prop) *properties;
         OPT(ig_tile_terrain) terrain;
         char *type;
@@ -309,6 +319,7 @@
 
     struct iron_goat_map {
         u32_t backgroundcolor;
+        i64_t compressionlevel;
         u64_t height;
         i64_t hexsidelenght;
         bool infinite;
@@ -324,11 +335,10 @@
         u64_t tileheight;
         VECTOR(ig_tile) *tilesets;
         u64_t tilewidth;
+        char *type;
+        i64_t version;
         u64_t width;
     };
-
-    INIT_VECTOR(ig_u64, u64_t, NULL);
-    INIT_VECTOR(ig_i64, i64_t, NULL);
 
     INIT_VECTOR(ig_map, struct iron_goat_map, destroy_iron_goat_map);
     INIT_VECTOR(ig_chunk, struct iron_goat_chunk, destroy_iron_goat_chunk);

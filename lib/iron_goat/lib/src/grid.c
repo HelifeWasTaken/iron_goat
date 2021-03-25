@@ -45,7 +45,8 @@ static const struct json_deser_data IG_GRID[] = {
             .callback = NULL,
             .woff = false
         },
-        .type = JSON_NUM
+        .type = JSON_NUM,
+        .opt = false
     },
     {
         .data = ".orientation",
@@ -55,7 +56,8 @@ static const struct json_deser_data IG_GRID[] = {
             .callback = iron_goat_grid_parse_orientation,
             .woff = false
         },
-        .type = JSON_STR
+        .type = JSON_STR,
+        .opt = false
     },
     {
         .data = ".width",
@@ -65,7 +67,8 @@ static const struct json_deser_data IG_GRID[] = {
             .woff = false
         },
         .offset = offsetof(struct iron_goat_grid, width),
-        .type = JSON_NUM
+        .type = JSON_NUM,
+        .opt = false
     }
 };
 

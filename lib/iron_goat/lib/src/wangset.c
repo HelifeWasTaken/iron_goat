@@ -28,9 +28,10 @@ bool load_iron_goat_wangset_cornercolors(struct json *conf,
 
     if ((self->cornercolors = VECTOR_CREATE(ig_wangcolor)) == NULL)
         return (false);
-    for (size_t i = 0; data->size; i++) {
+    for (size_t i = 0; i < data->size; i++) {
         color = (struct iron_goat_wangcolor){0};
-        init_iron_goat_wancolor(&data->data[i], &color);
+        if (init_iron_goat_wangcolor(&data->data[i], &color) == false)
+            return (false);
         if (self->cornercolors->push_back(&self->cornercolors, color) == -1)
             return (false);
     }
@@ -45,9 +46,10 @@ bool load_iron_goat_wangset_edgecolors(struct json *conf,
 
     if ((self->edgecolors = VECTOR_CREATE(ig_wangcolor)) == NULL)
         return (false);
-    for (size_t i = 0; data->size; i++) {
+    for (size_t i = 0; i < data->size; i++) {
         color = (struct iron_goat_wangcolor){0};
-        init_iron_goat_wancolor(&data->data[i], &color);
+        if (init_iron_goat_wangcolor(&data->data[i], &color) == false)
+            return (false);
         if (self->edgecolors->push_back(&self->edgecolors, color) == -1)
             return (false);
     }
@@ -62,9 +64,10 @@ bool load_iron_goat_wangset_properties(struct json *conf,
 
     if ((self->properties = VECTOR_CREATE(ig_prop)) == NULL)
         return (false);
-    for (size_t i = 0; data->size; i++) {
+    for (size_t i = 0; i < data->size; i++) {
         prop = (struct iron_goat_property){0};
-        init_iron_goat_props(&data->data[i], &prop);
+        if (init_iron_goat_props(&data->data[i], &prop) == false)
+            return (false);
         if (self->properties->push_back(&self->properties, prop) == -1)
             return (false);
     }
@@ -79,9 +82,10 @@ bool load_iron_goat_wangset_wangtiles(struct json *conf,
 
     if ((self->wangtiles = VECTOR_CREATE(ig_wangtile)) == NULL)
         return (false);
-    for (size_t i = 0; data->size; i++) {
+    for (size_t i = 0; i < data->size; i++) {
         wangtile = (struct iron_goat_wangtile){0};
-        init_iron_goat_props(&data->data[i], &wangtile);
+        if (init_iron_goat_wangtile(&data->data[i], &wangtile) == false)
+            return (false);
         if (self->wangtiles->push_back(&self->wangtiles, wangtile) == -1)
             return (false);
     }
@@ -97,7 +101,8 @@ static const struct json_deser_data IG_WANGSET[] = {
             .callback = load_iron_goat_wangset_cornercolors,
             .woff = false
         },
-        .type = JSON_ARR
+        .type = JSON_ARR,
+        .opt = false
     },
     {
         .data = ".edgecolors",
@@ -107,7 +112,8 @@ static const struct json_deser_data IG_WANGSET[] = {
             .callback = load_iron_goat_wangset_edgecolors,
             .woff = false
         },
-        .type = JSON_ARR
+        .type = JSON_ARR,
+        .opt = false
     },
     {
         .data = ".name",
@@ -117,7 +123,8 @@ static const struct json_deser_data IG_WANGSET[] = {
             .callback = iron_goat_get_string,
             .woff = true
         },
-        .type = JSON_STR 
+        .type = JSON_STR,
+        .opt = false
     },
     {
         .data = ".properties",
@@ -127,7 +134,8 @@ static const struct json_deser_data IG_WANGSET[] = {
             .callback = load_iron_goat_wangset_properties,
             .woff = false
         },
-        .type = JSON_ARR
+        .type = JSON_ARR,
+        .opt = false
     },
     {
         .data = ".tile",
@@ -137,7 +145,8 @@ static const struct json_deser_data IG_WANGSET[] = {
             .callback = NULL,
             .woff = false
         },
-        .type = JSON_NUM
+        .type = JSON_NUM,
+        .opt = false
     },
     {
         .data = ".wangtiles",
@@ -147,7 +156,8 @@ static const struct json_deser_data IG_WANGSET[] = {
             .callback = load_iron_goat_wangset_wangtiles,
             .woff = false
         },
-        .type = JSON_ARR
+        .type = JSON_ARR,
+        .opt = false
     }
 };
 
