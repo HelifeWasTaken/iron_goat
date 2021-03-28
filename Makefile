@@ -13,7 +13,7 @@ AR 				=	ar rc
 
 NAME 			=	libtgoat.a
 
-IFLAGS 			=	-I./include
+IFLAGS 			=	-I./erty/include -I./iron_goat/include
 
 DEBUG_FLAGS 	= 	-g3 -ggdb -O0 -O2
 
@@ -33,144 +33,144 @@ ifeq ($(DEBUG),1)
 	CFLAGS 		+=	$(DEBUG_FLAGS)
 endif
 
-SRC_CTYPE_IS	=	./erty/lib/ectypes/is/eis_alpha.c 			\
-			./erty/lib/ectypes/is/eis_lower.c 			\
-			./erty/lib/ectypes/is/eis_upper.c 			\
-			./erty/lib/ectypes/is/eis_num.c 				\
-			./erty/lib/ectypes/is/eis_alphanum.c		 	\
-			./erty/lib/ectypes/is/eis_space.c 			\
-			./erty/lib/ectypes/is/eis_punct.c 			\
-			./erty/lib/ectypes/is/eis_printable.c
+SRC_CTYPE_IS	=	./erty/ectypes/is/eis_alpha.c 			\
+			./erty/ectypes/is/eis_lower.c 			\
+			./erty/ectypes/is/eis_upper.c 			\
+			./erty/ectypes/is/eis_num.c 				\
+			./erty/ectypes/is/eis_alphanum.c		 	\
+			./erty/ectypes/is/eis_space.c 			\
+			./erty/ectypes/is/eis_punct.c 			\
+			./erty/ectypes/is/eis_printable.c
 
-SRC_CTYPE_TO	=	./erty/lib/ectypes/to/eto_lower.c 			\
-			./erty/lib/ectypes/to/eto_upper.c
-
-
-SRC_FD_BASIC	=	./erty/lib/efd/basic/edputchar.c 			\
-			./erty/lib/efd/basic/edputs.c
-
-SRC_FD_NUM 		= 	./erty/lib/efd/num/edputnbr.c 				\
-				./erty/lib/efd/num/eduputnbr.c 				\
-				./erty/lib/efd/num/edputfloat.c
-
-SRC_EFILE_BASIC	=	./erty/lib/efile/basic/efputchar.c 			\
-			./erty/lib/efile/basic/efputs.c
-
-SRC_EFILE_NUM 	= 	./erty/lib/efile/num/efputnbr.c 				\
-			./erty/lib/efile/num/efuputnbr.c 			\
-			./erty/lib/efile/num/efputfloat.c
-
-SRC_STDOUT 		=	./erty/lib/estdio/stdout/eputchar.c 			\
-				./erty/lib/estdio/stdout/eputs.c
-
-SRC_STDERR  	=	./erty/lib/estdio/stderr/e_errputchar.c 		\
-			./erty/lib/estdio/stderr/e_errputs.c
-
-SRC_STDLIB_MEM	=	./erty/lib/estdlib/mem/emalloc.c 			\
-			./erty/lib/estdlib/mem/efree.c 				\
-			./erty/lib/estdlib/mem/ecalloc.c 			\
-			./erty/lib/estdlib/mem/erealloc.c
-
-SRC_STDLIB_NUM	=	./erty/lib/estdlib/num/eatoi.c 				\
-			./erty/lib/estdlib/num/eatol.c 				\
-			./erty/lib/estdlib/num/euatoi.c 				\
-			./erty/lib/estdlib/num/euatol.c 				\
-			./erty/lib/estdlib/num/eitoa.c 				\
-			./erty/lib/estdlib/num/eaitoa.c 				\
-			./erty/lib/estdlib/num/euitoa.c 				\
-			./erty/lib/estdlib/num/eauitoa.c 			\
-			./erty/lib/estdlib/num/estrtol.c 			\
-			./erty/lib/estdlib/num/estrtoll.c 			\
-			./erty/lib/estdlib/num/eftoa.c 				\
-			./erty/lib/estdlib/num/eaftoa.c
+SRC_CTYPE_TO	=	./erty/ectypes/to/eto_lower.c 			\
+			./erty/ectypes/to/eto_upper.c
 
 
-SRC_STDLIB_PTR	=	./erty/lib/estdlib/ptr/eswap.c 				\
-			./erty/lib/estdlib/ptr/eptrswap.c 			\
-			./erty/lib/estdlib/ptr/eshowptr.c
+SRC_FD_BASIC	=	./erty/efd/basic/edputchar.c 			\
+			./erty/efd/basic/edputs.c
 
-SRC_STDLIB_MISC	=	./erty/lib/estdlib/misc/eget_start_sign.c 	\
-			./erty/lib/estdlib/misc/eis_valid_strtoll.c 	\
-			./erty/lib/estdlib/misc/eget_float_decimals.c
+SRC_FD_NUM 		= 	./erty/efd/num/edputnbr.c 				\
+				./erty/efd/num/eduputnbr.c 				\
+				./erty/efd/num/edputfloat.c
 
-SRC_CSTRING_CMP	=	./erty/lib/ecstring/cmp/estrlen.c 			\
-			./erty/lib/ecstring/cmp/estrchr.c 			\
-			./erty/lib/ecstring/cmp/estrcmp.c 			\
-			./erty/lib/ecstring/cmp/estrncmp.c 			\
-			./erty/lib/ecstring/cmp/estrstr.c 			\
-			./erty/lib/ecstring/cmp/ecount_occurences.c 	\
-			./erty/lib/ecstring/cmp/estartswith.c 		\
-			./erty/lib/ecstring/cmp/eendswith.c 			\
-			./erty/lib/ecstring/cmp/ecount_tab.c
+SRC_EFILE_BASIC	=	./erty/efile/basic/efputchar.c 			\
+			./erty/efile/basic/efputs.c
 
-SRC_CSTRING_CPY	=	./erty/lib/ecstring/cpy/estrcpy.c 			\
-			./erty/lib/ecstring/cpy/estrncpy.c 			\
-			./erty/lib/ecstring/cpy/estrdup.c 			\
-			./erty/lib/ecstring/cpy/estrndup.c 			\
-			./erty/lib/ecstring/cpy/estrcat.c 			\
-			./erty/lib/ecstring/cpy/esplit.c 			\
-			./erty/lib/ecstring/cpy/eappend_tab.c 		\
-			./erty/lib/ecstring/cpy/ecopy_tab.c 			\
-			./erty/lib/ecstring/cpy/econcat.c 			\
-			./erty/lib/ecstring/cpy/earrconcat.c 		\
-			./erty/lib/ecstring/cpy/egetsubstr.c
+SRC_EFILE_NUM 	= 	./erty/efile/num/efputnbr.c 				\
+			./erty/efile/num/efuputnbr.c 			\
+			./erty/efile/num/efputfloat.c
 
-SRC_CSTRING_IS	=	./erty/lib/ecstring/is/estr_isalpha.c 		\
-			./erty/lib/ecstring/is/estr_isalphanum.c 		\
-			./erty/lib/ecstring/is/estr_islower.c 		\
-			./erty/lib/ecstring/is/estr_isnum.c 			\
-			./erty/lib/ecstring/is/estr_isprintable.c 	\
-			./erty/lib/ecstring/is/estr_isupper.c
+SRC_STDOUT 		=	./erty/estdio/stdout/eputchar.c 			\
+				./erty/estdio/stdout/eputs.c
 
-SRC_CSTRING_MEM	=	./erty/lib/ecstring/mem/ememcpy.c 			\
-			./erty/lib/ecstring/mem/ememset.c 			\
-			./erty/lib/ecstring/mem/ememcmp.c 			\
-			./erty/lib/ecstring/mem/ebzero.c 				\
+SRC_STDERR  	=	./erty/estdio/stderr/e_errputchar.c 		\
+			./erty/estdio/stderr/e_errputs.c
 
-SRC_CSTRING_NUM	=	./erty/lib/ecstring/num/enblen.c 				\
-			./erty/lib/ecstring/num/enb_baselen.c 		\
-			./erty/lib/ecstring/num/eunblen.c 			\
-			./erty/lib/ecstring/num/eunb_baselen.c
+SRC_STDLIB_MEM	=	./erty/estdlib/mem/emalloc.c 			\
+			./erty/estdlib/mem/efree.c 				\
+			./erty/estdlib/mem/ecalloc.c 			\
+			./erty/estdlib/mem/erealloc.c
 
-SRC_CSTRING_MISC	=	./erty/lib/ecstring/misc/erevstr.c 			\
-				./erty/lib/ecstring/misc/estr_capitalize.c
+SRC_STDLIB_NUM	=	./erty/estdlib/num/eatoi.c 				\
+			./erty/estdlib/num/eatol.c 				\
+			./erty/estdlib/num/euatoi.c 				\
+			./erty/estdlib/num/euatol.c 				\
+			./erty/estdlib/num/eitoa.c 				\
+			./erty/estdlib/num/eaitoa.c 				\
+			./erty/estdlib/num/euitoa.c 				\
+			./erty/estdlib/num/eauitoa.c 			\
+			./erty/estdlib/num/estrtol.c 			\
+			./erty/estdlib/num/estrtoll.c 			\
+			./erty/estdlib/num/eftoa.c 				\
+			./erty/estdlib/num/eaftoa.c
 
-SRC_WSTRING		=	./erty/lib/wstring/ewcslen.c 				\
-				./erty/lib/wstring/ewcsputs.c 				\
-				./erty/lib/wstring/convert_ewcslen.c 		\
-				./erty/lib/wstring/convert_wchr_to_chr.c 	\
-				./erty/lib/wstring/ewcstombs.c
 
-SRC_EBUFF 		=	./erty/lib/ebuff/ecreate_buff.c				\
-				./erty/lib/ebuff/eappend_buff.c 				\
-				./erty/lib/ebuff/ebuff_flush.c				\
-				./erty/lib/ebuff/efree_buff.c 				\
-				./erty/lib/ebuff/eget_buff.c 				\
-				./erty/lib/ebuff/erealloc_buff.c 			\
-				./erty/lib/ebuff/ereset_buff.c
+SRC_STDLIB_PTR	=	./erty/estdlib/ptr/eswap.c 				\
+			./erty/estdlib/ptr/eptrswap.c 			\
+			./erty/estdlib/ptr/eshowptr.c
 
-SRC_EPRINTF_STD	=	./erty/lib/eprintf/standard/eprintf.c 		\
-			./erty/lib/eprintf/standard/easprintf.c 		\
-			./erty/lib/eprintf/standard/edprintf.c 		\
-			./erty/lib/eprintf/standard/efprintf.c
+SRC_STDLIB_MISC	=	./erty/estdlib/misc/eget_start_sign.c 	\
+			./erty/estdlib/misc/eis_valid_strtoll.c 	\
+			./erty/estdlib/misc/eget_float_decimals.c
 
-SRC_EPRINTF_VAR =	./erty/lib/eprintf/variadic/evprintf.c 		\
-			./erty/lib/eprintf/variadic/evasprintf.c 	\
-			./erty/lib/eprintf/variadic/evdprintf.c 		\
-			./erty/lib/eprintf/variadic/evfprintf.c
+SRC_CSTRING_CMP	=	./erty/ecstring/cmp/estrlen.c 			\
+			./erty/ecstring/cmp/estrchr.c 			\
+			./erty/ecstring/cmp/estrcmp.c 			\
+			./erty/ecstring/cmp/estrncmp.c 			\
+			./erty/ecstring/cmp/estrstr.c 			\
+			./erty/ecstring/cmp/ecount_occurences.c 	\
+			./erty/ecstring/cmp/estartswith.c 		\
+			./erty/ecstring/cmp/eendswith.c 			\
+			./erty/ecstring/cmp/ecount_tab.c
 
-EPRINTF_GBL_ARG		= ./erty/lib/eprintf/parser/get_arg/
+SRC_CSTRING_CPY	=	./erty/ecstring/cpy/estrcpy.c 			\
+			./erty/ecstring/cpy/estrncpy.c 			\
+			./erty/ecstring/cpy/estrdup.c 			\
+			./erty/ecstring/cpy/estrndup.c 			\
+			./erty/ecstring/cpy/estrcat.c 			\
+			./erty/ecstring/cpy/esplit.c 			\
+			./erty/ecstring/cpy/eappend_tab.c 		\
+			./erty/ecstring/cpy/ecopy_tab.c 			\
+			./erty/ecstring/cpy/econcat.c 			\
+			./erty/ecstring/cpy/earrconcat.c 		\
+			./erty/ecstring/cpy/egetsubstr.c
+
+SRC_CSTRING_IS	=	./erty/ecstring/is/estr_isalpha.c 		\
+			./erty/ecstring/is/estr_isalphanum.c 		\
+			./erty/ecstring/is/estr_islower.c 		\
+			./erty/ecstring/is/estr_isnum.c 			\
+			./erty/ecstring/is/estr_isprintable.c 	\
+			./erty/ecstring/is/estr_isupper.c
+
+SRC_CSTRING_MEM	=	./erty/ecstring/mem/ememcpy.c 			\
+			./erty/ecstring/mem/ememset.c 			\
+			./erty/ecstring/mem/ememcmp.c 			\
+			./erty/ecstring/mem/ebzero.c 				\
+
+SRC_CSTRING_NUM	=	./erty/ecstring/num/enblen.c 				\
+			./erty/ecstring/num/enb_baselen.c 		\
+			./erty/ecstring/num/eunblen.c 			\
+			./erty/ecstring/num/eunb_baselen.c
+
+SRC_CSTRING_MISC	=	./erty/ecstring/misc/erevstr.c 			\
+				./erty/ecstring/misc/estr_capitalize.c
+
+SRC_WSTRING		=	./erty/wstring/ewcslen.c 				\
+				./erty/wstring/ewcsputs.c 				\
+				./erty/wstring/convert_ewcslen.c 		\
+				./erty/wstring/convert_wchr_to_chr.c 	\
+				./erty/wstring/ewcstombs.c
+
+SRC_EBUFF 		=	./erty/ebuff/ecreate_buff.c				\
+				./erty/ebuff/eappend_buff.c 				\
+				./erty/ebuff/ebuff_flush.c				\
+				./erty/ebuff/efree_buff.c 				\
+				./erty/ebuff/eget_buff.c 				\
+				./erty/ebuff/erealloc_buff.c 			\
+				./erty/ebuff/ereset_buff.c
+
+SRC_EPRINTF_STD	=	./erty/eprintf/standard/eprintf.c 		\
+			./erty/eprintf/standard/easprintf.c 		\
+			./erty/eprintf/standard/edprintf.c 		\
+			./erty/eprintf/standard/efprintf.c
+
+SRC_EPRINTF_VAR =	./erty/eprintf/variadic/evprintf.c 		\
+			./erty/eprintf/variadic/evasprintf.c 	\
+			./erty/eprintf/variadic/evdprintf.c 		\
+			./erty/eprintf/variadic/evfprintf.c
+
+EPRINTF_GBL_ARG		= ./erty/eprintf/parser/get_arg/
 
 SRC_EPRINTF_ARG	=	$(EPRINTF_GBL_ARG)/eprintf_get_arg.c 	\
 			$(EPRINTF_GBL_ARG)/get_eprintf_ptr.c
 
-EPRINTF_MOD 	= 	./erty/lib/eprintf/parser/modif
+EPRINTF_MOD 	= 	./erty/eprintf/parser/modif
 
 SRC_EPRINTF_MOD	=	$(EPRINTF_MOD)/get_eprintf_flag_modifiers.c		\
 			$(EPRINTF_MOD)/get_eprintf_len_flag.c 			\
 			$(EPRINTF_MOD)/get_eprintf_modifications.c
 
-EPRINTF_LCL		=	./erty/lib/eprintf/parser/local
+EPRINTF_LCL		=	./erty/eprintf/parser/local
 
 SRC_EPRINTF_LCL	=	$(EPRINTF_LCL)/eprintf_append_padding.c 		\
 			$(EPRINTF_LCL)/eprintf_local_char.c	 			\
@@ -184,65 +184,65 @@ SRC_EPRINTF_LCL	=	$(EPRINTF_LCL)/eprintf_append_padding.c 		\
 			$(EPRINTF_LCL)/eprintf_local_double.c 			\
 			$(EPRINTF_LCL)/get_conversion_padding.c
 
-SRC_EPRINTF_MSC =	./erty/lib/eprintf/misc/check_eprintf_format.c 		\
-			./erty/lib/eprintf/misc/eprintf_failure.c
+SRC_EPRINTF_MSC =	./erty/eprintf/misc/check_eprintf_format.c 		\
+			./erty/eprintf/misc/eprintf_failure.c
 
 SRC_EPRINTF_PRS	=	$(SRC_EPRINTF_LCL) 						\
 			$(SRC_EPRINTF_MOD)						\
 			$(SRC_EPRINTF_ARG) 						\
-			./erty/lib/eprintf/parser/eprintf_parser.c
+			./erty/eprintf/parser/eprintf_parser.c
 
-SRC_EPRINTF_BUF =	./erty/lib/eprintf/buffer/eprintf_global_buff.c 		\
-			./erty/lib/eprintf/buffer/eprintf_buffer_reset.c 	\
-			./erty/lib/eprintf/buffer/eprintf_free_buff.c 		\
-			./erty/lib/eprintf/buffer/eformat.c
+SRC_EPRINTF_BUF =	./erty/eprintf/buffer/eprintf_global_buff.c 		\
+			./erty/eprintf/buffer/eprintf_buffer_reset.c 	\
+			./erty/eprintf/buffer/eprintf_free_buff.c 		\
+			./erty/eprintf/buffer/eformat.c
 
-SRC_EWRITE		=	./erty/lib/ewrite/ewrite.c 					\
-				./erty/lib/ewrite/efwrite.c
+SRC_EWRITE		=	./erty/ewrite/ewrite.c 					\
+				./erty/ewrite/efwrite.c
 
-SRC_SSTR		=	./erty/lib/esstring/init.c 				\
-				./erty/lib/esstring/append.c 			\
-				./erty/lib/esstring/append_n.c 			\
-				./erty/lib/esstring/assign.c 			\
-				./erty/lib/esstring/assign_n.c			\
-				./erty/lib/esstring/at.c 				\
-				./erty/lib/esstring/compare.c 			\
-				./erty/lib/esstring/ncompare.c 			\
-				./erty/lib/esstring/print.c 				\
-				./erty/lib/esstring/to_buf.c 			\
-				./erty/lib/esstring/free.c
+SRC_SSTR		=	./erty/esstring/init.c 				\
+				./erty/esstring/append.c 			\
+				./erty/esstring/append_n.c 			\
+				./erty/esstring/assign.c 			\
+				./erty/esstring/assign_n.c			\
+				./erty/esstring/at.c 				\
+				./erty/esstring/compare.c 			\
+				./erty/esstring/ncompare.c 			\
+				./erty/esstring/print.c 				\
+				./erty/esstring/to_buf.c 			\
+				./erty/esstring/free.c
 
-SRC_EREGEX 		=	./erty/lib/eregex/eregex.c 				\
-				./erty/lib/eregex/eregex_utilities.c
+SRC_EREGEX 		=	./erty/eregex/eregex.c 				\
+				./erty/eregex/eregex_utilities.c
 
-SRC_JSON_GET 	=	./erty/lib/json/getter/get_array.c \
-			./erty/lib/json/getter/get_object.c \
-			./erty/lib/json/getter/getter.c
+SRC_JSON_GET 	=	./erty/json/getter/get_array.c \
+			./erty/json/getter/get_object.c \
+			./erty/json/getter/getter.c
 
-SRC_JSON_PARSE 	=	./erty/lib/json/parser/get_buff.c \
-			./erty/lib/json/parser/array.c \
-			./erty/lib/json/parser/init.c \
-			./erty/lib/json/parser/value.c \
-			./erty/lib/json/parser/withespace.c \
-			./erty/lib/json/parser/bool.c \
-			./erty/lib/json/parser/null.c \
-			./erty/lib/json/parser/number.c \
-			./erty/lib/json/parser/object.c \
-			./erty/lib/json/parser/string.c
+SRC_JSON_PARSE 	=	./erty/json/parser/get_buff.c \
+			./erty/json/parser/array.c \
+			./erty/json/parser/init.c \
+			./erty/json/parser/value.c \
+			./erty/json/parser/withespace.c \
+			./erty/json/parser/bool.c \
+			./erty/json/parser/null.c \
+			./erty/json/parser/number.c \
+			./erty/json/parser/object.c \
+			./erty/json/parser/string.c
 
-SRC_JSON_VEC 	=	./erty/lib/json/vector/at.c \
-			./erty/lib/json/vector/clear.c \
-			./erty/lib/json/vector/insert.c
+SRC_JSON_VEC 	=	./erty/json/vector/at.c \
+			./erty/json/vector/clear.c \
+			./erty/json/vector/insert.c
 
-SRC_JSON_LIST	=	./erty/lib/json/list/at.c \
-			./erty/lib/json/list/create.c \
-			./erty/lib/json/list/pop.c \
-			./erty/lib/json/list/push.c
+SRC_JSON_LIST	=	./erty/json/list/at.c \
+			./erty/json/list/create.c \
+			./erty/json/list/pop.c \
+			./erty/json/list/push.c
 
-SRC_JSON_HASH 	=	./erty/lib/json/hashmap/clear.c \
-			./erty/lib/json/hashmap/getter.c \
-			./erty/lib/json/hashmap/insert.c \
-			./erty/lib/json/hashmap/resize.c
+SRC_JSON_HASH 	=	./erty/json/hashmap/clear.c \
+			./erty/json/hashmap/getter.c \
+			./erty/json/hashmap/insert.c \
+			./erty/json/hashmap/resize.c
 
 SRC_JSON 		=	$(SRC_JSON_LIST) \
 				$(SRC_JSON_HASH) \
@@ -298,7 +298,7 @@ SRC_ERTY		=	$(SRC_EWRITE) 							\
 				$(SRC_EREGEX)							\
 				$(SRC_JSON)
 
-PATH_PRIV_IG  	=	./iron_goat/lib/src/priv
+PATH_PRIV_IG  	=	./iron_goat/priv
 
 SRC_IG_PRIV 	=	$(PATH_PRIV_IG)/tile/load_tile.c \
 			$(PATH_PRIV_IG)/grid/load_grid.c \
@@ -310,25 +310,25 @@ SRC_IG_PRIV 	=	$(PATH_PRIV_IG)/tile/load_tile.c \
 			$(PATH_PRIV_IG)/text/load_text.c \
 			$(PATH_PRIV_IG)/tileset/load_tileset.c
 
-SRC_IG 		=	./iron_goat/lib/src/chunk.c \
-			./iron_goat/lib/src/frame.c \
-			./iron_goat/lib/src/layer.c \
-			./iron_goat/lib/src/map.c \
-			./iron_goat/lib/src/object.c \
-			./iron_goat/lib/src/point.c \
-			./iron_goat/lib/src/property.c \
-			./iron_goat/lib/src/terrain.c \
-			./iron_goat/lib/src/text.c \
-			./iron_goat/lib/src/tile_terrain.c \
-			./iron_goat/lib/src/tile.c \
-			./iron_goat/lib/src/tileoffset.c \
-			./iron_goat/lib/src/tileset.c \
-			./iron_goat/lib/src/wangcolor.c \
-			./iron_goat/lib/src/wangset.c \
-			./iron_goat/lib/src/wangtile.c \
-			./iron_goat/lib/src/grid.c \
-			./iron_goat/lib/src/get_string.c \
-			./iron_goat/lib/src/hexatoint.c \
+SRC_IG 		=	./iron_goat/chunk.c \
+			./iron_goat/frame.c \
+			./iron_goat/layer.c \
+			./iron_goat/map.c \
+			./iron_goat/object.c \
+			./iron_goat/point.c \
+			./iron_goat/property.c \
+			./iron_goat/terrain.c \
+			./iron_goat/text.c \
+			./iron_goat/tile_terrain.c \
+			./iron_goat/tile.c \
+			./iron_goat/tileoffset.c \
+			./iron_goat/tileset.c \
+			./iron_goat/wangcolor.c \
+			./iron_goat/wangset.c \
+			./iron_goat/wangtile.c \
+			./iron_goat/grid.c \
+			./iron_goat/get_string.c \
+			./iron_goat/hexatoint.c \
 			$(SRC_IG_PRIV)
 
 SRC 	=	$(SRC_ERTY) \
