@@ -17,7 +17,7 @@ int main(void)
     json_t json_file = {0};
     ig_map_t map_conf = {0};
     
-    if (jsonparser("map.json") == false)
+    if (jsonparser(&json_file, "map.json") == false)
         return (1);
     if (iron_goat_load_map(&json_file, &map_conf) == false) {
         destroy_json(&json_file);
