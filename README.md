@@ -6,6 +6,8 @@ This library only supports json exports and csv for now to load maps `layers.dat
 
 Will only work on UNIX as `<unistd.h>` is required
 
+This repository is old and will be updated asap (to see the whole Tiled Json parsing library checkout my [rpg project](https://github.com/Heliferepo/ThatDayITriedToBecomeTheDemonKing-myrpg) in lib/iron_goat
+
 ## How to use
 
 ```c
