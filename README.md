@@ -1,12 +1,15 @@
 # IronGoat
 
-## Disclaimer 
+## Disclaimer
 
 This library only supports json exports and csv for now to load maps `layers.data`
 
 Will only work on UNIX as `<unistd.h>` is required
 
-This repository is old and will be updated asap (to see the whole Tiled Json parsing library checkout my [rpg project](https://github.com/Heliferepo/ThatDayITriedToBecomeTheDemonKing-myrpg) in lib/iron_goat
+It also comes with is own minilibC but you can replace everything by hand if you want
+Any PR to make it use GCC LibC is welcome
+
+The json code is in erty/json the Tiled map handler is in iron_goat who uses erty
 
 ## How to use
 
@@ -18,8 +21,8 @@ int main(void)
 {
     json_t json_file = {0};
     ig_map_t map_conf = {0};
-    
-    if (jsonparser(&json_file, "map.json") == false)
+
+    if (jsonparser("map.json") == false)
         return (1);
     if (iron_goat_load_map(&json_file, &map_conf) == false) {
         destroy_json(&json_file);
